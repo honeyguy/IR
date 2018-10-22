@@ -1,0 +1,97 @@
+<html ng-app="crudApp">
+<head>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="utf-8" http-equiv="encoding">
+<title>Meastro Ilaiyaraja Song</title>
+
+
+ <script data-require="angular.js@1.1.5" data-semver="1.1.5" src="http://code.angularjs.org/1.1.5/angular.min.js"></script>
+ <link data-require="bootstrap-css@2.3.2" data-semver="2.3.2" rel="stylesheet" href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" />
+ 
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"> 
+
+<script type="text/javascript" src="app/songController.js"></script>
+</head>
+
+<body ng-controller="SongController">
+<div class="panel panel-default">
+
+<div class="panel-heading">Illaiyaraja Songs</div>
+
+<div class="panel-body">
+
+
+   <form>
+   <div class="form-group">
+		<label>Song Title</label> 
+			<input type="text" name="title" ng-model="newsong.title" class="form-control" id="title" placeholder="Title"/>
+		<label>Film</label> 
+			<input type="text" name="film" ng-model="newsong.film" class="form-control" id="film" placeholder="Film"/>
+		<label>Year</label> 
+			<input type="text" name="year" ng-model="newsong.year" class="form-control" id="year" placeholder="Year"/>
+		 <label>Singer</label> 
+        <div>
+				<select multiple = "multiple" class="form-control" ng-model="newsong.singer" ng-selected="x.name" 
+											ng-options="x.name as x.name for x in singers">   </select>				
+		</div>		 
+		 
+			<br/>
+		
+		 <input type="submit" id="1" ng-click="saveSong()" ng-model="buttonText" value="{{buttonText}}" class="btn btn-default"/>
+		 <input type="submit" id="2"  ng-click="searchSong()" ng-model="buttonText2" value="{{buttonText2}}" class="btn btn-default"/> 
+		 <br/>	 
+		
+	 </div>
+   </form>
+
+ 
+
+
+
+  
+	 
+<div class="table-responsive col-md-8">	
+<table border='1' class="table table-striped">
+<thead> 
+<tr>
+    <th>Title</th>
+    <th>Film</th>
+    <th>Year</th>
+	 <th>Singer</th>
+    <th>Action</th>
+</tr>
+</thead>
+
+
+<tbody border='1'>
+<tr ng-repeat="song in songs">
+    <td>{{ song.title }}</td>
+    <td>{{ song.film }}</td>
+    <td>{{ song.year }}</td>
+	<td>{{ song.singer }}</td>
+    <td>
+     <button type="button" class="btn btn-default"	ng-click="edit(song.id)">
+								<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+     </button>  | 
+       <button type="button" class="btn btn-default"	ng-click="delete(song.id)">
+								<span class="glyphicon glyphicon-remove-circle"	aria-hidden="true"></span>
+	   </button>
+    </td>
+ </tr>
+</tbody>
+
+</table>    
+</div>
+
+</div>
+
+ <table align="center" cellpadding="10"cellspacing="10" border='1' >
+		 <tr>		      
+		     <td align="center"valign="center" ng-repeat="i in songArr"><a href ng-click="numOfPages($index)">{{$index+1}}</a></td>				 
+         </tr>
+ </table> 
+</body>
+
+</div>
+
+</html>

@@ -1,0 +1,55 @@
+<html ng-app="myApp">
+<head>
+<title>Hello World, AngularJS - ViralPatel.net</title>
+<script type="text/javascript" 	src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<!-- Optional theme -->
+<link rel="stylesheet"href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+<!-- Latest compiled and minified JavaScript -->
+<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body ng-controller="customersCtrl">
+<div>
+
+<ul>
+  <li ng-repeat="x in myData">
+    {{ x.title }}
+  </li>
+</ul>
+
+<div>{{statusval}}</div>
+<div>{{statustext}}</div>
+<div>{{headers}}</div>
+<div>{{error}}</div>
+
+</div>
+
+</body>
+<script>
+var app = angular.module('myApp', []);
+
+app.config(['$httpProvider', function ($httpProvider) {
+  //Reset headers to avoid OPTIONS request (aka preflight)
+  $httpProvider.defaults.headers.common = {};
+  $httpProvider.defaults.headers.post = {};
+  $httpProvider.defaults.headers.put = {};
+  $httpProvider.defaults.headers.patch = {};
+}]);
+
+app.controller('customersCtrl', function($scope, $http) {
+    $http.defaults.headers.post["Content-Type"] = "text/plain";
+	
+	$http.get("http://localhost:8080/song/listSong")
+    .then(function(response) {
+        $scope.myData = response.data;
+    });
+   
+});
+
+
+</script>
+</html>

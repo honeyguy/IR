@@ -1,0 +1,26 @@
+localhost:8090/singer/all
+{    "name": "Asha Bosle"    
+}
+
+localhost:8090/song/listSong
+
+localhost:8090/song/songYear?year=1988
+
+localhost:8090/song/songSinger?name=Jesudass,Janaki
+
+localhost:8090/song/entrySong
+    {
+        "title": "Raaja Raajathi",
+        "singer": "Ilaiyaraja",
+        "film": "Agni Natchathiram",
+        "year": "1988"
+    }
+	
+localhost:8090/song/songUpt
+{
+        "id": 38,
+        "title": "Putham Puthu",
+        "singer": "Jesudass K.J., Janaki S.",
+        "film": "Thalapathy",
+        "year": "1991"
+    }	
