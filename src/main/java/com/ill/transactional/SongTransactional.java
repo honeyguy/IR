@@ -68,6 +68,8 @@ public class SongTransactional implements Filter {
         int size = songLst.size();
         int elem_index = (size - 1) / 3;
 
+        songLst.sort(Comparator.comparing(Song::getFilm).thenComparing(Song::getTitle));
+
         resultLst = Lists.partition(songLst, elem_index);
         //resultLst = songLst.stream().limit(5) .collect(Collectors.toList());
 
@@ -80,6 +82,8 @@ public class SongTransactional implements Filter {
         List<List<Song>> resultLst = null;
         int size = songLst.size();
         int elem_index = (size - 1) / 3;
+
+        songLst.sort(Comparator.comparing(Song::getFilm).thenComparing(Song::getTitle));
 
         List<Song> songSearchLst = songLst.stream()
                 .filter(song -> song.getYear().equals(year))
@@ -97,6 +101,8 @@ public class SongTransactional implements Filter {
         List<List<Song>> resultLst = null;
         int size = songLst.size();
         int elem_index = (size - 1) / 3;
+
+        songLst.sort(Comparator.comparing(Song::getFilm).thenComparing(Song::getTitle));
 
       /*  String[] splitted = Arrays.stream(input.split(","))
                 .map(String::trim)
@@ -116,9 +122,6 @@ public class SongTransactional implements Filter {
                     .filter(song -> song.getSinger().contains(singer) )
                     .collect(Collectors.toList());
         }
-
-        songLst.sort(Comparator.comparing(Song::getTitle));
-
         resultLst = Lists.partition(songLst, elem_index);
 
         return resultLst;
@@ -134,13 +137,15 @@ public class SongTransactional implements Filter {
         return songRepository.save(song);
     }
 
-    public Song updateSong(Song songDetails) {
-        if (songDetails.getId() != null && !songRepository.existsById(songDetails.getId())) {
-            throw new EntityNotFoundException("There is no entity with such ID in the database.");
-        }
+    public void deleteSong(Long id) {
 
-        Song song = songRepository.findById(songDetails.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Song", "id", songDetails.getId()));
+        songRepository.deleteById(id) ;
+
+    }
+
+    public Song updateSong(Song songDetails) {
+      /*  Song song = songRepository.findById(songDetails.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Song", "id", songDetails.getId()));*/
 
         Song updatedSong = songRepository.save(songDetails);
 

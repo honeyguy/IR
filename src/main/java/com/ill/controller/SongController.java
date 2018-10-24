@@ -48,30 +48,25 @@ public class SongController {
 
 
     @PostMapping("/entrySong")
-    public ResponseEntity<Song> createSong(@Valid @RequestBody Song song) throws URISyntaxException {
+    public ResponseEntity<Song> createUpdateSong(@Valid @RequestBody Song song) throws URISyntaxException {
+        System.out.println("song.getId()=" + song.getId() );
+        Song result = null;
         try {
-            Song result = songTransactional.createSong(song);
-            return ResponseEntity.created(new URI("/song/listSong/" + result.getId())).body(result);
+            if (song.getId() == null) {
+                System.out.println("Insert Song" );
+                result = songTransactional.createSong(song);
+            }
+            else {
+                System.out.println("Update Song" );
+                result = songTransactional.updateSong(song);
+            }
+
+            return ResponseEntity .ok(result) ;
         } catch (EntityExistsException e) {
-            return new ResponseEntity<Song>(HttpStatus.CONFLICT);
-        }
-    }
-
-
-    @PutMapping("/songUpt")
-    public ResponseEntity<Song> updateEmployee(@Valid @RequestBody Song songDetails) throws URISyntaxException {
-        if (songDetails.getId() == null) {
-            return new ResponseEntity<Song>(HttpStatus.NOT_FOUND);
-        }
-
-        try {
-            Song result = songTransactional.updateSong(songDetails);
-
-            return ResponseEntity.created(new URI("/song/listSong/" + result.getId())).body(result);
-        } catch (EntityNotFoundException e) {
             return new ResponseEntity<Song>(HttpStatus.NOT_FOUND);
         }
     }
+
 
     @RequestMapping(value = "/songYear")
     public List<List<Song>> getAllSongByYear(@RequestParam(value = "year", required = false) String year) {
@@ -89,5 +84,38 @@ public class SongController {
         System.out.println("Rakesh SongLst=" + songLst );
 
         return songLst;
+    }
+
+
+    @RequestMapping("/deleteSong")
+    public ResponseEntity deleteSong(@RequestParam(value = "id", required = false) String songId) throws URISyntaxException {
+        System.out.println("Delete Id=" + songId);
+        if (songId == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        //(@PathVariable("key") String key
+
+        try {
+            songTransactional.deleteSong(Long.parseLong(songId));
+            return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+
+    @PostMapping("/songUpt")
+    public ResponseEntity<Song> updateSong(@Valid @RequestBody Song songDetails) throws URISyntaxException {
+        if (songDetails.getId() == null) {
+            return new ResponseEntity<Song>(HttpStatus.NOT_FOUND);
+        }
+
+        try {
+            Song result = songTransactional.updateSong(songDetails);
+
+            return ResponseEntity.created(new URI("/song/listSong/" + result.getId())).body(result);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<Song>(HttpStatus.NOT_FOUND);
+        }
     }
 }
